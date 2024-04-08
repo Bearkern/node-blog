@@ -35,8 +35,6 @@ router.post('/article/create', (req, res) => {
   data.id = key;
   data.update_time = updateTime;
 
-  console.log('data:', data);
-
   articleRef.set(data).then(() => {
     res.redirect('/dashboard/article/create');
   });
