@@ -8,6 +8,7 @@ const categoriesRef = firebaseAdminDb.ref('/categories');
 const articlesRef = firebaseAdminDb.ref('/articles');
 
 router.get('/archives', (req, res, next) => {
+  const status = req.query.status || 'public';
   let categories = {};
 
   categoriesRef.once('value').then((snapshot) => {
@@ -16,7 +17,9 @@ router.get('/archives', (req, res, next) => {
   }).then((snapshot) => {
     const articles = [];
     snapshot.forEach((snapshotChild) => {
-      articles.push(snapshotChild.val());
+      if(status === snapshotChild.val().status) {
+        articles.push(snapshotChild.val());
+      }
       articles.reverse();
     });
     res.render('dashboard/archives', { categories, articles, striptags, moment });

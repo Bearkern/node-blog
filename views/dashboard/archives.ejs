@@ -3,15 +3,14 @@
 <div class="row justify-content-center">
   <div class="col-md-6">
     <div class="btn-group w-100">
-      <a href="#" class="btn btn-outline-secondary w-100 rounded-0 active"
+      <a href="/dashboard/archives?status=public" class="btn btn-outline-secondary w-100 rounded-0 active"
         >已發佈</a
       >
-      <a href="#" class="btn btn-outline-secondary w-100 rounded-0">草稿</a>
+      <a href="/dashboard/archives?status=draft" class="btn btn-outline-secondary w-100 rounded-0">草稿</a>
       <a href="article.html" class="btn btn-primary">新增文章</a>
     </div>
 
     <% for(const id in articles) { %>
-    <% for(const key in categories) { %>
     <div class="card my-3">
       <h4 class="card-header"><%- articles[id].title %></h4>
       <div class="card-body">
@@ -20,7 +19,7 @@
           <span class="fa fa-clock-o"></span>
           <%- moment(articles[id].update_time * 1000).format('YYYY/MM/DD') %>
           <span class="fa fa-folder-open-o"></span>
-          <span> <%- categories[key].name %> </span>
+          <span> <%- articles[id].category %> </span>
         </div>
       </div>
       <div class="card-footer p-0 btn-group">
@@ -41,7 +40,6 @@
         >
       </div>
     </div>
-    <% } %>
     <% } %>
   </div>
 </div>
