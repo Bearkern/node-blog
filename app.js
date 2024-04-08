@@ -4,6 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const engine = require('ejs-locals');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 const app = express();
 
@@ -18,6 +20,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 100 * 1000
+  }
+}));
+app.use(flash());
 
 // set routes
 const indexRouter = require('./routes/index');
