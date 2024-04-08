@@ -13,7 +13,22 @@ router.get('/archives', (req, res, next) => {
 router.get('/article/create', (req, res, next) => {
   categoriesRef.once('value').then((snapshot) => {
     const categories = snapshot.val();
-    res.render('dashboard/article', { categories });
+    const article = {};
+    res.render('dashboard/article', { categories, article });
+  });
+});
+
+router.get('/article/:id', (req, res) => {
+  const id = req.params.id;
+  let categories = {};
+  categoriesRef.once('value').then((snapshot) => {
+    categories = snapshot.val();
+
+    return articlesRef.child(id).once('value');
+  }).then((snapshot) => {
+    const article = snapshot.val();
+
+    res.render('dashboard/article', { categories, article });
   });
 });
 
@@ -31,14 +46,23 @@ router.post('/article/create', (req, res) => {
   const articleRef = articlesRef.push();
   const key = articleRef.key;
   const updateTime = Math.floor(Date.now() / 1000);
-  
+
   data.id = key;
   data.update_time = updateTime;
 
   articleRef.set(data).then(() => {
-    res.redirect('/dashboard/article/create');
+    res.redirect(`/dashboard/article/${key}`);
   });
 });
+
+router.post('/article/update/:id', (req, res) => {
+  const data = req.body;
+  const id = req.params.id;
+
+  articlesRef.child(id).update(data).then(() => {
+    res.redirect(`/dashboard/article/${id}`);
+  });
+})
 
 router.post('/categories/create', (req, res) => {
   const data = req.body;
