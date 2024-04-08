@@ -80,6 +80,16 @@ router.post('/article/update/:id', (req, res) => {
   });
 })
 
+router.post('/article/delete/:id', (req, res) => {
+  const id = req.params.id;
+  articlesRef.once('value').then((snapshot) => {
+    const article = snapshot.val()[id].title;
+    articlesRef.child(id).remove();
+    res.send(`${article}文章已刪除`);
+    res.end();
+  });
+});
+
 router.post('/categories/create', (req, res) => {
   const data = req.body;
   const categoryRef = categoriesRef.push();

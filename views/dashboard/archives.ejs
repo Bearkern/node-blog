@@ -3,10 +3,16 @@
 <div class="row justify-content-center">
   <div class="col-md-6">
     <div class="btn-group w-100">
-      <a href="/dashboard/archives?status=public" class="btn btn-outline-secondary w-100 rounded-0 active"
+      <a
+        href="/dashboard/archives?status=public"
+        class="btn btn-outline-secondary w-100 rounded-0 active"
         >已發佈</a
       >
-      <a href="/dashboard/archives?status=draft" class="btn btn-outline-secondary w-100 rounded-0">草稿</a>
+      <a
+        href="/dashboard/archives?status=draft"
+        class="btn btn-outline-secondary w-100 rounded-0"
+        >草稿</a
+      >
       <a href="article.html" class="btn btn-primary">新增文章</a>
     </div>
 
@@ -26,7 +32,7 @@
         <a
           href="#"
           class="btn btn-outline-danger rounded-0 deletePost"
-          data-id="<%- id %>"
+          data-id="<%- articles[id].id %>"
           data-title="<%- articles[id].title %>"
           >刪除</a
         >
@@ -63,3 +69,23 @@
     </li>
   </ul>
 </nav>
+
+<script>
+  $(() => {
+    $('.deletePost').on('click', function(e) {
+      e.preventDefault();
+
+      const id = $(this).data('id');
+      const title = $(this).data('title');
+      
+      if(confirm(`確認是否刪除${title}`)) {
+        $.ajax({
+          method: 'POST',
+          url: `/dashboard/article/delete/${id}`
+        }).done((res) => {
+          window.location = '/dashboard/archives';
+        });
+      }
+    });
+  });
+</script>
