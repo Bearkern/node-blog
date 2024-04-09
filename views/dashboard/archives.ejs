@@ -23,9 +23,15 @@
         <%- striptags(articles[id].content).slice(0, 150) %>...
         <div>
           <span class="fa fa-clock-o"></span>
-          <%- moment(articles[id].update_time * 1000).format('YYYY/MM/DD') %>
+          <%- moment(articles[id].update_time * 1000).format('YYYY/MM/DD') %> 
           <span class="fa fa-folder-open-o"></span>
-          <span> <%- articles[id].category %> </span>
+          <span>
+            <% if(categories.hasOwnProperty(articles[id].category)) { %>
+              <%- categories[articles[id].category].name %>
+            <% } else { %>
+              沒有分類
+            <% } %>
+          </span>
         </div>
       </div>
       <div class="card-footer p-0 btn-group">

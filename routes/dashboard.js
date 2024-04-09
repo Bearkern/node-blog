@@ -20,8 +20,8 @@ router.get('/archives', (req, res, next) => {
       if(status === snapshotChild.val().status) {
         articles.push(snapshotChild.val());
       }
-      articles.reverse();
     });
+    articles.reverse();
     res.render('dashboard/archives', { categories, articles, striptags, moment });
   });
 });
