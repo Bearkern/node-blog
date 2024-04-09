@@ -2,29 +2,33 @@
 
 <div class="row my-4 justify-content-center">
   <div class="col-md-9">
+    <% for(const id in articles) { %>
     <div class="card mb-3">
       <div class="card-body">
-        <a href="/post.html">
-          <h2 class="text-primary">補充課程：Sass 與 includePaths</h2></a
+        <a href="/post/<%= articles[id].id %>">
+          <h2 class="text-primary"><%- articles[id].title %></h2></a
         >
         <div class="d-flex flex-row text-secondary small">
           <div class="p-2">
-            <span class="fa fa-clock-o"></span> 2018/01/04
+            <span class="fa fa-clock-o"></span> <%- moment(articles[id].update_time * 1000).format('YYYY/MM/DD') %>
           </div>
           <div class="p-2">
             <i class="fa fa-tag" aria-hidden="true"></i>
-            <a href="#" class="text-info"> 沒有分類 </a>
+            <a href="#" class="text-info">
+              <% if(categories.hasOwnProperty(articles[id].category)) { %>
+                <%- categories[articles[id].category].name %>
+              <% } else { %>
+                沒有分類
+              <% } %>
+            </a>
           </div>
         </div>
         <div>
-          [程式][PHP] HTML
-          表單(Form)以陣列(Array)方式傳遞&lt;input&nbsp;type=&#39;text&#39;&gt;資訊。
-          什麼時候會用到這樣的方法，我無法明確表達，可能要靠你自己想像。
-          我遇到的狀況是要讓user不斷的新增商品與價格。
-          第一種做法：&nbsp;.....
+          <%- striptags(articles[id].content).slice(0, 150) %>...
         </div>
       </div>
     </div>
+    <% } %>
   </div>
 </div>
 
