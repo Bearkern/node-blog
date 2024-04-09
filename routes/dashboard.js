@@ -7,6 +7,15 @@ const moment = require('moment');
 const categoriesRef = firebaseAdminDb.ref('/categories');
 const articlesRef = firebaseAdminDb.ref('/articles');
 
+router.get('/', (req, res) => {
+  const messages = req.flash('error');
+
+  res.render('dashboard/index', {
+    currentPath: '/',
+    hasErrors: messages.length > 0,
+  });
+});
+
 router.get('/archives', (req, res, next) => {
   const status = req.query.status || 'public';
   let categories = {};

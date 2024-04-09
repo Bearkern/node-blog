@@ -6,6 +6,7 @@ const logger = require('morgan');
 const engine = require('ejs-locals');
 const flash = require('connect-flash');
 const session = require('express-session');
+require('dotenv').config();
 
 const app = express();
 
@@ -31,11 +32,19 @@ app.use(session({
 app.use(flash());
 
 // set routes
-const indexRouter = require('./routes/index');
-const dashboardRouter = require('./routes/dashboard');
+const index = require('./routes/index');
+const dashboard = require('./routes/dashboard');
+const auth = require('./routes/auth');
+const checkAuth = ((req, res, next) => {
+  if(req.session.uid === process.env.ADMIN_UID) {
+    return next();
+  }
+  return res.redirect('/auth/signin');
+});
 
-app.use('/', indexRouter);
-app.use('/dashboard', dashboardRouter);
+app.use('/', index);
+app.use('/dashboard', checkAuth, dashboard);
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
