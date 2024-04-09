@@ -9,7 +9,7 @@ const articlesRef = firebaseAdminDb.ref('articles');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  let currentPage = req.query.page || 1;
+  let currentPage = Number.parseInt(req.query.page) || 1;
   const status = 'public';
   let categories = {};
 
@@ -49,7 +49,7 @@ router.get('/', (req, res, next) => {
     const page = {
       totalPages,
       currentPage,
-      hasPre: currentPage > 1,
+      hasPrev: currentPage > 1,
       hasNext: currentPage < totalPages,
     };
 
