@@ -1,3 +1,10 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<% layout('./layouts/index.ejs') %>
+
+<div class="hex-blog">
+  <div class="row justify-content-center">
+    <div class="col-md-9">
+      <h1><%- errorMessage %></h1>
+      <a href="/">回首頁</a>
+    </div>
+  </div>
+</div>

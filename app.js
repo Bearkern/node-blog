@@ -49,6 +49,9 @@ app.use('/auth', auth);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));
+  res.render('error', {
+    errorMessage: '您所查看的頁面不存在 ：('
+  });
 });
 
 // error handler

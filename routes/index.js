@@ -50,6 +50,12 @@ router.get('/post/:id', (req, res, next) => {
   }).then((snapshot) => {
     const article = snapshot.val();
 
+    if(!article) {
+      return res.render('error', {
+        errorMessage: '找不到該文章',
+      });
+    }
+
     res.render('post', { categories, article, striptags, moment });
   });
 });
