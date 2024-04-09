@@ -9,6 +9,7 @@ const articlesRef = firebaseAdminDb.ref('articles');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
+  let currentPage = req.query.page || 1;
   const status = 'public';
   let categories = {};
 
@@ -18,12 +19,41 @@ router.get('/', (req, res, next) => {
   }).then((snapshot) => {
     const articles = [];
     snapshot.forEach((snapshotChild) => {
-      if(status === snapshotChild.val().status) {
+      if (status === snapshotChild.val().status) {
         articles.push(snapshotChild.val());
       }
     });
     articles.reverse();
-    res.render('index', { categories, articles, striptags, moment });
+
+    const totalItems = articles.length;
+    const perpage = 3;
+    const totalPages = Math.ceil(totalItems / perpage);
+
+    if (currentPage > totalPages) {
+      currentPage = totalPages;
+    }
+
+    const minItem = (currentPage * perpage) - perpage + 1;
+    const maxItem = (currentPage * perpage);
+
+    console.log('總筆數:', totalItems, '每頁幾筆:', perpage, '總頁數:', totalPages, '每頁起始筆數:', minItem, '每頁結束筆數:', maxItem);
+
+    const data = [];
+    articles.forEach((item, index) => {
+      const itemNum = index + 1;
+      if (itemNum >= minItem && itemNum <= maxItem) {
+        data.push(item);
+      }
+    });
+
+    const page = {
+      totalPages,
+      currentPage,
+      hasPre: currentPage > 1,
+      hasNext: currentPage < totalPages,
+    };
+
+    res.render('index', { categories, articles: data, page, striptags, moment });
   });
 });
 
