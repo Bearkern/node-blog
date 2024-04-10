@@ -3,6 +3,7 @@ const router = express.Router();
 const firebaseAdminDb = require('../connections/firebase-admin');
 const striptags = require('striptags');
 const moment = require('moment');
+const paginateData = require('../modules/paginateData');
 
 const categoriesRef = firebaseAdminDb.ref('/categories');
 const articlesRef = firebaseAdminDb.ref('/articles');
@@ -17,6 +18,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/archives', (req, res, next) => {
+  const currentPage = Number.parseInt(req.query.page) || 1;
   const status = req.query.status || 'public';
   let categories = {};
 
@@ -31,7 +33,17 @@ router.get('/archives', (req, res, next) => {
       }
     });
     articles.reverse();
-    res.render('dashboard/archives', { categories, articles, striptags, moment });
+
+    const data = paginateData(articles, currentPage);
+
+    res.render('dashboard/archives', {
+      categories,
+      articles: data.data,
+      page: data.page,
+      striptags,
+      moment,
+      currentPath: '/dashboard/archives/',
+    });
   });
 });
 

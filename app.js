@@ -26,7 +26,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   cookie: {
-    maxAge: 100 * 1000
+    maxAge: 3600000
   }
 }));
 app.use(flash());

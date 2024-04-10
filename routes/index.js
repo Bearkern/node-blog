@@ -10,7 +10,7 @@ const articlesRef = firebaseAdminDb.ref('articles');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  let currentPage = Number.parseInt(req.query.page) || 1;
+  const currentPage = Number.parseInt(req.query.page) || 1;
   const status = 'public';
   let categories = {};
 
@@ -35,7 +35,8 @@ router.get('/', (req, res, next) => {
       articles: data.data,
       page: data.page,
       striptags,
-      moment
+      moment,
+      currentPath: '/',
     });
   });
 });
